@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         });
 
 
-        browser.loadUrl("http://android.alrehablife.com/");
+        browser.loadUrl(getString(R.string.SiteURL));
     }
     protected void RefreshPage()
     {
@@ -146,16 +146,17 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             this.activity = activity;
             this.urlCache = new UrlCache(activity);
 
-            this.urlCache.register("http://android.alrehablife.com/", "index.html",
+            this.urlCache.register( getString(R.string.SiteURL), "index.html",
                     "text/html", "UTF-8", 5 * UrlCache.ONE_MINUTE);
 
-            this.urlCache.register("http://android.alrehablife.com/aboutus.html", "aboutus.html",
+            this.urlCache.register( getString(R.string.SiteURL)+"/aboutus.html", "aboutus.html",
                     "text/html", "UTF-8", 5 * UrlCache.ONE_MINUTE);
+
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-            if(url.indexOf("alrehablife.com") > -1 ) return false;
+            if(url.contains(getString(R.string.SiteDomain)) ) return false;
 
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             activity.startActivity(intent);
@@ -168,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            if("http://android.alrehablife.com/".equals(url)){
-                this.urlCache.load("http://android.alrehablife.com/");
+            if( getString(R.string.SiteURL).equals(url)){
+                this.urlCache.load(getString(R.string.SiteURL));
             }
             else
             {

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Al Rehab</string>
+    <string name="SiteURL">http://android.alrehablife.com/</string>
+    <string name="SiteDomain">alrehablife.com</string>
 </resources>

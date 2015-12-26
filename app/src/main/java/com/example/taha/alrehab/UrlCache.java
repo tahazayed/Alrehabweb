@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class UrlCache {
 
@@ -73,7 +74,12 @@ public class UrlCache {
     public WebResourceResponse load(String url){
         CacheEntry cacheEntry = this.cacheEntries.get(url);
 
-        if(cacheEntry == null) return null;
+        if(cacheEntry == null)
+        {
+            this.register(url, UUID.randomUUID().toString()+".cache",
+                    "text/html", "UTF-8", 5 * UrlCache.ONE_MINUTE);
+            cacheEntry = this.cacheEntries.get(url);
+        }
 
         File cachedFile = new File(this.rootDir.getPath() + File.separator + cacheEntry.fileName);
 
@@ -100,7 +106,21 @@ public class UrlCache {
 
         } else {
             try{
-                downloadAndStore(url, cacheEntry, cachedFile);
+                final String  urlTemp=url;
+                final CacheEntry cacheEntryTemp=cacheEntry;
+                final File cachedFileTemp=cachedFile;
+                new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        try {
+
+                            downloadAndStore(urlTemp, cacheEntryTemp, cachedFileTemp);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }).start();
+
 
                 //now the file exists in the cache, so we can just call this method again to read it.
                 return load(url);

@@ -146,17 +146,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             this.activity = activity;
             this.urlCache = new UrlCache(activity);
 
-            this.urlCache.register( getString(R.string.SiteURL), "index.html",
+            /*this.urlCache.register( getString(R.string.SiteURL), "index.html",
                     "text/html", "UTF-8", 5 * UrlCache.ONE_MINUTE);
 
             this.urlCache.register( getString(R.string.SiteURL)+"/aboutus.html", "aboutus.html",
                     "text/html", "UTF-8", 5 * UrlCache.ONE_MINUTE);
-
+           */
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
-            if(url.contains(getString(R.string.SiteDomain)) ) return false;
+            if(url.contains(getString(R.string.SiteDomain))) {
+                return false;
+            }
 
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             activity.startActivity(intent);

@@ -1,9 +1,7 @@
 package com.example.taha.alrehab.BusinessEntities;
 
 import java.util.Date;
-/**
- * Created by taha on 12/28/15.
- */
+
 public class AlrehabNotification {
     private int _id;
     private String _title;
@@ -13,7 +11,7 @@ public class AlrehabNotification {
     private String _imageUrl;
     private String _imageThumbUrl;
 
-    private short _type;
+    private int _type;
 
     public AlrehabNotification() {
     }
@@ -23,7 +21,7 @@ public class AlrehabNotification {
                                Date publishdate,
                                String imageUrl,
                                String imageThumbUrl,
-                               short type
+                               int type
     ) {
         this._id = id;
         this._title = title;
@@ -75,11 +73,11 @@ public class AlrehabNotification {
         this._imageThumbUrl = _imageThumbUrl;
     }
 
-    public short get_type() {
+    public int get_type() {
         return _type;
     }
 
-    public void set_type(short _type) {
+    public void set_type(int _type) {
         this._type = _type;
     }
 }

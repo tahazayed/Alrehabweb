@@ -6,19 +6,19 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.taha.alrehab.BusinessEntities.AlrehabNotification;
-
-//import com.alrehablife.alrehab.DB.StoriesDBHandler;
-
 import com.example.taha.alrehab.JSON.AlrehabNotificationsJSONHandler;
 import com.example.taha.alrehab.R;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
-public class UpdateDBService extends Service implements AlrehabNotificationsJSONHandler.AlrehabNotificationsJSONHandlerClient{
+//import com.alrehablife.alrehab.DB.StoriesDBHandler;
 
-    private static final String TAG = "UpdateDBService";
+public class NotificationsService extends Service implements AlrehabNotificationsJSONHandler.AlrehabNotificationsJSONHandlerClient {
+
+    private static final String TAG = "NotificationsService";
     private static long UPDATE_INTERVAL = 3 * 60 * 1000;  //default
     private static Timer timer = new Timer();
 
@@ -61,7 +61,7 @@ public class UpdateDBService extends Service implements AlrehabNotificationsJSON
     private void doServiceWork() {
 
         try {
-            new AlrehabNotificationsJSONHandler(UpdateDBService.this).execute(getString(R.string.NotificationAPI));
+            new AlrehabNotificationsJSONHandler(NotificationsService.this).execute(getString(R.string.NotificationAPI) + UUID.randomUUID().toString());
             if (IsDebug) Log.d(TAG, "StoriesJSONHandler invoked...");
 
         } catch (Exception e) {
@@ -83,7 +83,9 @@ public class UpdateDBService extends Service implements AlrehabNotificationsJSON
 
     @Override
     public void onAlrehabNotificationsJSONHandlerClientResult(List<AlrehabNotification> list) {
-        if (IsDebug) Log.d(TAG, "onAlrehabNotificationJSONHandlerJSONHandlerClientResult invoked..." + list.size());
+        if (IsDebug)
+            Log.d(TAG, "onAlrehabNotificationsJSONHandlerJSONHandlerClientResult invoked..." + list.size());
+
         /*Story[] lstStories = list.toArray(new Story[list.size()]);
         int size = lstStories.length;
         StoriesDBHandler db = new StoriesDBHandler(getApplicationContext());

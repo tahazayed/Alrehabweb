@@ -18,9 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-/**
- * Created by taha on 12/28/15.
- */
+
 public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, List<AlrehabNotification>> {
 
     public static final String COLUMN_ID = "Id";
@@ -76,7 +74,7 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
                     Date _publishdate = dateFormat.parse(finalObject.getString(COLUMN_PUBLISHDATE));
                     String _imageUrl = finalObject.getString(COLUMN_IMAGEURL);
                     String _imageThumbUrl = finalObject.getString(COLUMN_IMAGETHUMBURL);
-                    short _type = Short.parseShort(COLUMN_TYPE);
+                    int _type = finalObject.getInt(COLUMN_TYPE);
                     _imageUrl = _imageUrl.replace("../", "http://test.alrehablife.com/");
                     _imageThumbUrl = _imageThumbUrl.replace("../", "http://test.alrehablife.com/");
                     AlrehabNotificationList.add(new AlrehabNotification(_id,

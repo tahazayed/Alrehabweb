@@ -2,6 +2,8 @@ package com.example.taha.alrehab;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -103,6 +105,31 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         browser.loadUrl(getString(R.string.SiteURL));
         Intent intent = new Intent(this, NotificationsService.class);
         startService(intent);
+
+        BroadcastReceiver sentSmsBroadcastCome = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Bundle extras = intent.getExtras();
+                if (extras != null) {
+                    int type = Integer.parseInt(extras.getString("Type"));
+                    String id = extras.getString("Id");
+                    String url = getString(R.string.SiteURL);
+                    switch (type) {
+                        case 1:
+                            url += "/News/newsDetails.html#/?storyId=" + id;
+                            break;
+                        default:
+                            url += "/Events/eventsDetails.html#/?eventId=" + id;
+                            break;
+                    }
+                    browser.loadUrl(url);
+                }
+            }
+        };
+/*        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction("m.sent");
+        registerReceiver(sentSmsBroadcastCome, filterSend);*/
     }
 
     protected void RefreshPage()

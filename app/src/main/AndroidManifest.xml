@@ -17,11 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name="MyPhoneReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"></action>
-            </intent-filter>
-        </receiver>
         <service
             android:name=".BackgroundServices.NotificationsService"
             android:exported="false" />

@@ -21,7 +21,6 @@ public class AlrehabNotification {
     public AlrehabNotification(int id,
                                String title,
                                Date publishdate,
-                               Date expirationdate,
                                String imageUrl,
                                String imageThumbUrl,
                                short type

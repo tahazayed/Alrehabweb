@@ -19,6 +19,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.support.v4.view.GestureDetectorCompat;
 
+import com.example.taha.alrehab.R;
+import com.example.taha.alrehab.UrlCache;
+
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener{
 

@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         webSettings.setAppCacheEnabled(true);
         webSettings.setDisplayZoomControls(true);
         webSettings.setDomStorageEnabled(true);
+        webSettings.setCacheMode(1);
+        webSettings.setLoadsImagesAutomatically(true);
 
 
         browser.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                     url += "Events/eventsDetails.html#/?eventId=" + id;
                     break;
             }
+            RefreshPage();
             browser.loadUrl(url);
         }
 
@@ -226,18 +229,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public class WebViewClientImpl extends WebViewClient {
 
         private Activity activity = null;
-        private UrlCache urlCache = null;
 
         public WebViewClientImpl(Activity activity) {
             this.activity = activity;
-            this.urlCache = new UrlCache(activity);
 
-            /*this.urlCache.register( getString(R.string.SiteURL), "index.html",
-                    "text/html", "UTF-8", 5 * UrlCache.ONE_MINUTE);
-
-            this.urlCache.register( getString(R.string.SiteURL)+"/aboutus.html", "aboutus.html",
-                    "text/html", "UTF-8", 5 * UrlCache.ONE_MINUTE);
-           */
         }
 
         @Override
@@ -256,11 +251,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            if (getString(R.string.SiteURL).equals(url)) {
-                this.urlCache.load(getString(R.string.SiteURL));
-            } else {
-                this.urlCache.load(url);
-            }
+
         }
 
 

@@ -1,10 +1,16 @@
 package com.example.taha.alrehab.BackgroundServices;
 
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.taha.alrehab.BusinessEntities.AlrehabNotification;
@@ -14,28 +20,20 @@ import com.example.taha.alrehab.MainActivity;
 import com.example.taha.alrehab.R;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.res.Resources;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.graphics.BitmapFactory;
-import android.app.Notification;
-import java.util.Random;
 
 public class NotificationsService extends Service implements AlrehabNotificationsJSONHandler.AlrehabNotificationsJSONHandlerClient {
 
     private static final String TAG = "NotificationsService";
-
-    private static long UPDATE_INTERVAL = 3 * 60 * 1000;  //default
-    private static Timer timer = new Timer();
-
     public static boolean isRunning = false;
-    private boolean IsDebug = true;
     static String userId;
+    private static long UPDATE_INTERVAL = 15 * 60 * 1000;  //default
+    private static Timer timer = new Timer();
+    private boolean IsDebug = true;
+
     @Override
     public void onCreate() {
         if (IsDebug) Log.d(TAG, "Service onCreate");
@@ -43,7 +41,7 @@ public class NotificationsService extends Service implements AlrehabNotification
             isRunning = true;
         UserDBHandler db = new UserDBHandler(getApplicationContext());
         userId=db.getUserId();
-        if(userId=="")
+        if (userId.isEmpty())
         {
             userId=UUID.randomUUID().toString();
             db.updateUser(userId);
@@ -112,7 +110,7 @@ public class NotificationsService extends Service implements AlrehabNotification
         rand.setSeed(100);
         if(list.size()>0) {
             NotificationManagerCompat.from(this).cancelAll();
-            NotificationManager nm = (NotificationManager) this.getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+            NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             Resources res = getApplicationContext().getResources();
             for (AlrehabNotification oAlrehabNotification : list) {
                 int msgId = rand.nextInt();
@@ -141,10 +139,10 @@ public class NotificationsService extends Service implements AlrehabNotification
                         .setOnlyAlertOnce(false)
                         .setGroup("Alrehab")
                         .setGroupSummary(false)
-                        .setCategory("news").build();
+                        .setCategory("news");
 
 
-                Notification n = builder.getNotification();
+                Notification n = builder.build();
 
                 n.defaults |= Notification.DEFAULT_ALL;
                 nm.notify(msgId, n);

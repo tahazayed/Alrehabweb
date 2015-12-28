@@ -2,8 +2,6 @@ package com.example.taha.alrehab;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.gestureDetector = new GestureDetector(this,this);
+        this.gestureDetector = new GestureDetector(this, this);
         this.gestureDetector.setOnDoubleTapListener(this);
 
         browser = (WebView) findViewById(R.id.webView);
@@ -64,11 +62,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mContentView = browser;
 
 
-
         browser = (WebView) findViewById(R.id.webView);
 
         CookieManager.getInstance().acceptCookie();
-        WebSettings webSettings=browser.getSettings();
+        WebSettings webSettings = browser.getSettings();
 
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadsImagesAutomatically(true);
@@ -80,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         browser.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         browser.setKeepScreenOn(true);
-
 
 
         WebViewClientImpl webViewClient = new WebViewClientImpl(this);
@@ -103,13 +99,18 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
 
         browser.loadUrl(getString(R.string.SiteURL));
-        Intent intent = new Intent(this, NotificationsService.class);
-        startService(intent);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            int type = Integer.parseInt(extras.getString("Type"));
-            String id = extras.getString("Id");
+        Intent CurrIntent = getIntent();
+        if (CurrIntent.hasExtra("Type") && CurrIntent.hasExtra("Id")) {
+            Bundle extras = getIntent().getExtras();
+            int type = 0;
+            String id = "";
+            if (!extras.getString("Type").equals(null)) {
+                type = Integer.parseInt(extras.getString("Type"));
+            }
+            if (!extras.getString("Id").equals(null)) {
+                id = extras.getString("Id");
+            }
             String url = getString(R.string.SiteURL);
             switch (type) {
                 case 1:
@@ -121,30 +122,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             }
             browser.loadUrl(url);
         }
-/*        BroadcastReceiver sentSmsBroadcastCome = new BroadcastReceiver() {
 
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Bundle extras = intent.getExtras();
-                if (extras != null) {
-                    int type = Integer.parseInt(extras.getString("Type"));
-                    String id = extras.getString("Id");
-                    String url = getString(R.string.SiteURL);
-                    switch (type) {
-                        case 1:
-                            url += "/News/newsDetails.html#/?storyId=" + id;
-                            break;
-                        default:
-                            url += "/Events/eventsDetails.html#/?eventId=" + id;
-                            break;
-                    }
-                    browser.loadUrl(url);
-                }
-            }
-        };*/
-/*        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction("m.sent");
-        registerReceiver(sentSmsBroadcastCome, filterSend);*/
+
+        Intent intent = new Intent(this, NotificationsService.class);
+        startService(intent);
     }
 
     protected void RefreshPage()
@@ -240,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         RefreshPage();
         return true;
     }
+
 
     public class WebViewClientImpl extends WebViewClient {
 

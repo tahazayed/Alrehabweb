@@ -8,6 +8,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.taha.alrehab.BusinessEntities.AlrehabNotification;
+import com.example.taha.alrehab.DB.UserDBHandler;
 import com.example.taha.alrehab.JSON.AlrehabNotificationsJSONHandler;
 import com.example.taha.alrehab.MainActivity;
 import com.example.taha.alrehab.R;
@@ -31,21 +32,29 @@ public class NotificationsService extends Service implements AlrehabNotification
 
     private static long UPDATE_INTERVAL = 3 * 60 * 1000;  //default
     private static Timer timer = new Timer();
-    private static Intent _intent;
-    private boolean isRunning = false;
+
+    public static boolean isRunning = false;
     private boolean IsDebug = true;
-    static String userId=UUID.randomUUID().toString();
+    static String userId;
     @Override
     public void onCreate() {
         if (IsDebug) Log.d(TAG, "Service onCreate");
 
-        isRunning = true;
+            isRunning = true;
+        UserDBHandler db = new UserDBHandler(getApplicationContext());
+        userId=db.getUserId();
+        if(userId=="")
+        {
+            userId=UUID.randomUUID().toString();
+            db.updateUser(userId);
+        }
+        db.close();
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        _intent = intent;
         if (IsDebug) Log.d(TAG, "Service onStartCommand");
 
         timer.scheduleAtFixedRate(
@@ -106,7 +115,7 @@ public class NotificationsService extends Service implements AlrehabNotification
             NotificationManager nm = (NotificationManager) this.getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
             Resources res = getApplicationContext().getResources();
             for (AlrehabNotification oAlrehabNotification : list) {
-int msgId=rand.nextInt();
+                int msgId = rand.nextInt();
                 Intent notificationIntent = new Intent(this, MainActivity.class);
 
                 notificationIntent.putExtra("Type", (Integer.toString(oAlrehabNotification.get_type())));
@@ -115,7 +124,6 @@ int msgId=rand.nextInt();
                 PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
                         msgId, notificationIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
-
 
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
@@ -140,7 +148,6 @@ int msgId=rand.nextInt();
 
                 n.defaults |= Notification.DEFAULT_ALL;
                 nm.notify(msgId, n);
-
             }
            /* Intent notificationIntent = new Intent(this, MainActivity.class);
 

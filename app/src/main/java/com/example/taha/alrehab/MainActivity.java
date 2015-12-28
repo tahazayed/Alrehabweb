@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 case 1:
                     url += "News/newsDetails.html#/?storyId=" + id;
                     break;
-                default:
+                case 2:
                     url += "Events/eventsDetails.html#/?eventId=" + id;
                     break;
             }

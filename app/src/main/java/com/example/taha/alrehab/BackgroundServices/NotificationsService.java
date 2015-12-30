@@ -10,7 +10,6 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.taha.alrehab.BusinessEntities.AlrehabNotification;
@@ -109,7 +108,7 @@ public class NotificationsService extends Service implements AlrehabNotification
         final Random rand = new Random();
         rand.setSeed(100);
         if(list.size()>0) {
-            NotificationManagerCompat.from(this).cancelAll();
+            //NotificationManagerCompat.from(this).cancelAll();
             NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             Resources res = getApplicationContext().getResources();
             for (AlrehabNotification oAlrehabNotification : list) {

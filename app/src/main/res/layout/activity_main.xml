@@ -20,12 +20,12 @@
         android:background="#319C32"
         android:gravity = "center_vertical|center_horizontal"
         android:keepScreenOn="false" />
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:keepScreenOn="false"
-        />
+    <!--    <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:keepScreenOn="false"
+            />-->
 </RelativeLayout>

@@ -13,13 +13,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 
 import com.example.taha.alrehab.BackgroundServices.NotificationsService;
+
+//import android.webkit.WebChromeClient;
+//import android.widget.ProgressBar;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener{
@@ -86,19 +87,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         browser.setWebViewClient(webViewClient);
 
 
-        browser.setWebChromeClient(new WebChromeClient() {
-            public void onProgressChanged(WebView view, int newProgress) {
-                ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-                if (newProgress < 100 && progressBar.getVisibility() == ProgressBar.GONE) {
-                    progressBar.setVisibility(ProgressBar.VISIBLE);
-                }
-                progressBar.setProgress(newProgress);
-                //progressTxt.setText(newProgress);
-                if (newProgress == 100) {
-                    progressBar.setVisibility(ProgressBar.GONE);
-                }
-            }
-        });
+//        browser.setWebChromeClient(new WebChromeClient() {
+//            public void onProgressChanged(WebView view, int newProgress) {
+//                ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+//                if (newProgress < 100 && progressBar.getVisibility() == ProgressBar.GONE) {
+//                    progressBar.setVisibility(ProgressBar.VISIBLE);
+//                }
+//                progressBar.setProgress(newProgress);
+//                //progressTxt.setText(newProgress);
+//                if (newProgress == 100) {
+//                    progressBar.setVisibility(ProgressBar.GONE);
+//                }
+//            }
+//        });
 
 
         browser.loadUrl(getString(R.string.SiteURL));

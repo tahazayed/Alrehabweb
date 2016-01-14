@@ -2,7 +2,10 @@ package com.example.taha.alrehab;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +19,7 @@ import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.example.taha.alrehab.BackgroundServices.NotificationsService;
 
@@ -101,37 +105,43 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 //            }
 //        });
 
+        if (isConnectingToInternet(getApplicationContext())) {
+            browser.loadUrl(getString(R.string.SiteURL));
 
-        browser.loadUrl(getString(R.string.SiteURL));
+            Intent CurrIntent = getIntent();
+            if (CurrIntent.hasExtra("Type") && CurrIntent.hasExtra("Id")) {
+                Bundle extras = getIntent().getExtras();
+                int type = 0;
+                String id = "";
+                if (!extras.getString("Type").equals(null)) {
+                    type = Integer.parseInt(extras.getString("Type"));
+                }
+                if (!extras.getString("Id").equals(null)) {
+                    id = extras.getString("Id");
+                }
+                String url = getString(R.string.SiteURL);
+                switch (type) {
+                    case 1:
+                        url += "News/newsDetails.html#/?storyId=" + id;
+                        break;
+                    case 2:
+                        url += "Events/eventsDetails.html#/?eventId=" + id;
+                        break;
+                }
+                RefreshPage();
+                browser.loadUrl(url);
+            }
 
-        Intent CurrIntent = getIntent();
-        if (CurrIntent.hasExtra("Type") && CurrIntent.hasExtra("Id")) {
-            Bundle extras = getIntent().getExtras();
-            int type = 0;
-            String id = "";
-            if (!extras.getString("Type").equals(null)) {
-                type = Integer.parseInt(extras.getString("Type"));
-            }
-            if (!extras.getString("Id").equals(null)) {
-                id = extras.getString("Id");
-            }
-            String url = getString(R.string.SiteURL);
-            switch (type) {
-                case 1:
-                    url += "News/newsDetails.html#/?storyId=" + id;
-                    break;
-                case 2:
-                    url += "Events/eventsDetails.html#/?eventId=" + id;
-                    break;
-            }
-            RefreshPage();
-            browser.loadUrl(url);
+
+            Intent intent = new Intent(this, NotificationsService.class);
+            startService(intent);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            // show alert
+            Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
         }
 
 
-        Intent intent = new Intent(this, NotificationsService.class);
-        startService(intent);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     protected void RefreshPage()
@@ -226,6 +236,18 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public boolean onDoubleTapEvent(MotionEvent e) {
         RefreshPage();
         return true;
+    }
+
+    private boolean isConnectingToInternet(Context applicationContext) {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            // There are no active networks.
+            Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
+            return false;
+        } else
+            return true;
+
     }
 
 

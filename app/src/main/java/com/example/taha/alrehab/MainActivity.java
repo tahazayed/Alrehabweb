@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     //| View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    // | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
@@ -76,11 +76,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         webSettings.setDisplayZoomControls(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setLoadWithOverviewMode(true);
 
 
         browser.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        browser.setKeepScreenOn(true);
+        browser.setKeepScreenOn(false);
 
 
         WebViewClientImpl webViewClient = new WebViewClientImpl(this);

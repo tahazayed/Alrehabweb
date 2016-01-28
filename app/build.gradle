@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.example.taha.alrehab"
+        applicationId "com.taha.alrehab"
         minSdkVersion 15
         targetSdkVersion 20
         versionCode 1

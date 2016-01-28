@@ -20,7 +20,8 @@
         </activity>
         <service
             android:name=".BackgroundServices.NotificationsService"
-            android:exported="false" />
+            android:exported="false"
+            android:process=":remote" />
     </application>
 
 </manifest>

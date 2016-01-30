@@ -2,5 +2,5 @@
     <string name="app_name">Al Rehab</string>
     <string name="SiteURL">http://android.alrehablife.com/</string>
     <string name="SiteDomain">alrehablife.com</string>
-    <string name="NotificationAPI">http://test.alrehablife.com/api/Notifications/GetMyNotifications/?UserID=</string>
+    <string name="NotificationAPI">http://www.alrehablife.com/api/Notifications/GetMyNotifications/?UserID=</string>
 </resources>

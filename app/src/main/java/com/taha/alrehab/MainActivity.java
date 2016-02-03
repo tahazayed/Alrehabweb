@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
      */
-    private static final int UI_ANIMATION_DELAY = 2000;
+    private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     protected WebView browser = null;
     protected GestureDetector gestureDetector;

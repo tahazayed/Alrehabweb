@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.getAllowContentAccess();
-        webSettings.setAppCacheEnabled(true);
+        webSettings.setAppCacheEnabled(false);
         webSettings.setDisplayZoomControls(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);

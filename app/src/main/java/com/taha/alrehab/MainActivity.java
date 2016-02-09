@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.taha.alrehab.BackgroundServices.NotificationsService;
+import com.taha.alrehab.Helpers.ConnectionHelper;
 
 //import android.webkit.WebChromeClient;
 //import android.widget.ProgressBar;
@@ -105,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 //            }
 //        });
 
-        if (isConnectingToInternet(getApplicationContext())) {
+        // if (isConnectingToInternet(getApplicationContext())) {
+        if (ConnectionHelper.IsOnline()) {
             browser.loadUrl(getString(R.string.SiteURL));
 
             Intent CurrIntent = getIntent();
@@ -139,6 +141,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         } else {
             // show alert
             Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3500); // As I am using LENGTH_LONG in Toast
+                        System.exit(0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+
         }
 
 

@@ -5,6 +5,7 @@ import java.util.Date;
 public class AlrehabNotification {
     private int _id;
     private String _title;
+    private String _body;
 
     private Date _publishdate;
 
@@ -21,7 +22,8 @@ public class AlrehabNotification {
                                Date publishdate,
                                String imageUrl,
                                String imageThumbUrl,
-                               int type
+                               int type,
+                               String body
     ) {
         this._id = id;
         this._title = title;
@@ -29,6 +31,7 @@ public class AlrehabNotification {
         this._imageUrl = imageUrl;
         this._imageThumbUrl = imageThumbUrl;
         this._type = type;
+        this._body = body;
     }
 
     public int get_id() {
@@ -79,5 +82,13 @@ public class AlrehabNotification {
 
     public void set_type(int _type) {
         this._type = _type;
+    }
+
+    public String get_body() {
+        return _body;
+    }
+
+    public void set_body(String _body) {
+        this._body = _body;
     }
 }

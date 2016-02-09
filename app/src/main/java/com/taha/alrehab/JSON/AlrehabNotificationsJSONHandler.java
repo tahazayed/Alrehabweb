@@ -27,6 +27,7 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
     public static final String COLUMN_IMAGEURL = "ImageUrl";
     public static final String COLUMN_IMAGETHUMBURL = "ImageThumbUrl";
     public static final String COLUMN_TYPE = "Type";
+    public static final String COLUMN_BODY = "Body";
     private final AlrehabNotificationsJSONHandlerClient mClient;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
@@ -71,18 +72,21 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
                 try {
                     int _id = finalObject.getInt(COLUMN_ID);
                     String _title = finalObject.getString(COLUMN_TITLE);
+                    String _body = finalObject.getString(COLUMN_BODY);
+
                     Date _publishdate = dateFormat.parse(finalObject.getString(COLUMN_PUBLISHDATE));
                     String _imageUrl = finalObject.getString(COLUMN_IMAGEURL);
                     String _imageThumbUrl = finalObject.getString(COLUMN_IMAGETHUMBURL);
                     int _type = finalObject.getInt(COLUMN_TYPE);
-                    _imageUrl = _imageUrl.replace("../", "http://test.alrehablife.com/");
-                    _imageThumbUrl = _imageThumbUrl.replace("../", "http://test.alrehablife.com/");
+                    _imageUrl = _imageUrl.replace("../", "http://android.alrehablife.com/");
+                    _imageThumbUrl = _imageThumbUrl.replace("../", "http://android.alrehablife.com/");
                     AlrehabNotificationList.add(new AlrehabNotification(_id,
                             _title,
                             _publishdate,
                             _imageUrl,
                             _imageThumbUrl,
-                            _type));
+                            _type,
+                            _body));
 
 
                 } catch (Exception ex) {

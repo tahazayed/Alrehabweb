@@ -10,7 +10,7 @@ public class ConnectionHelper {
 
     public static boolean IsOnline() {
         try {
-            HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.alrehablife.com.com").openConnection());
+            HttpURLConnection urlc = (HttpURLConnection) (new URL("http://android.alrehablife.com").openConnection());
             urlc.setRequestProperty("User-Agent", "Test");
             urlc.setRequestProperty("Connection", "close");
             urlc.setConnectTimeout(3000); //choose your own timeframe

@@ -1,9 +1,11 @@
 package com.taha.alrehab.JSON;
 
+import android.content.res.Resources;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.taha.alrehab.BusinessEntities.AlrehabNotification;
+import com.taha.alrehab.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -78,8 +80,8 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
                     String _imageUrl = finalObject.getString(COLUMN_IMAGEURL);
                     String _imageThumbUrl = finalObject.getString(COLUMN_IMAGETHUMBURL);
                     int _type = finalObject.getInt(COLUMN_TYPE);
-                    _imageUrl = _imageUrl.replace("../", "http://android.alrehablife.com/");
-                    _imageThumbUrl = _imageThumbUrl.replace("../", "http://android.alrehablife.com/");
+                    _imageUrl = _imageUrl.replace("../", Resources.getSystem().getString(R.string.SiteURL));
+                    _imageThumbUrl = _imageThumbUrl.replace("../", Resources.getSystem().getString(R.string.SiteURL));
                     AlrehabNotificationList.add(new AlrehabNotification(_id,
                             _title,
                             _publishdate,

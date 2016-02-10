@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class SplashScreen extends Activity {
 
@@ -23,28 +24,59 @@ public class SplashScreen extends Activity {
 
         setContentView(R.layout.splashscreen);
 
-
-        new Handler().postDelayed(new Runnable() {
-
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(i);
+        if (isOnline()) {
+            new Handler().postDelayed(new Runnable() {
 
 
-                //jeda selesai Splashscreen
-                this.finish();
-            }
-
-            private void finish() {
-                // TODO Auto-generated method stub
-
-            }
-        }, splashInterval);
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    Intent i = new Intent(SplashScreen.this, MainActivity.class);
+                    startActivity(i);
 
 
+                    //jeda selesai Splashscreen
+                    this.finish();
+                }
+
+                private void finish() {
+                    // TODO Auto-generated method stub
+
+                }
+            }, splashInterval);
+
+        } else {
+            Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3500); // As I am using LENGTH_LONG in Toast
+                        System.exit(0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+        }
+    }
+
+    protected boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
     }
 
 }

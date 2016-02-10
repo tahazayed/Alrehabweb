@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -22,7 +23,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.taha.alrehab.BackgroundServices.NotificationsService;
-import com.taha.alrehab.Helpers.ConnectionHelper;
+
 
 //import android.webkit.WebChromeClient;
 //import android.widget.ProgressBar;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
      */
-    private static final int UI_ANIMATION_DELAY = 300;
+    private static final int UI_ANIMATION_DELAY = 0;
     private final Handler mHideHandler = new Handler();
     protected WebView browser = null;
     protected GestureDetector gestureDetector;
@@ -61,8 +62,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        hide();
         this.gestureDetector = new GestureDetector(this, this);
         this.gestureDetector.setOnDoubleTapListener(this);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         browser = (WebView) findViewById(R.id.webView);
 
@@ -77,11 +80,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.getAllowContentAccess();
-        webSettings.setAppCacheEnabled(false);
+        webSettings.setAppCacheEnabled(true);
         webSettings.setDisplayZoomControls(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setLoadWithOverviewMode(true);
+        browser.setBackgroundColor(Color.TRANSPARENT);
 
 
         browser.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -105,11 +109,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 //                }
 //            }
 //        });
-        ConnectionHelper oConnectionHelper = new ConnectionHelper();
-        oConnectionHelper.execute(getApplicationContext());
+        //ConnectionHelper oConnectionHelper = new ConnectionHelper();
+        //oConnectionHelper.execute(getApplicationContext());
         // if (isConnectingToInternet(getApplicationContext())) {
-
-        browser.loadUrl(getString(R.string.SiteURL));
+        if (isOnline()) {
+            browser.loadUrl(getString(R.string.SiteURL));
 
             Intent CurrIntent = getIntent();
             if (CurrIntent.hasExtra("Type") && CurrIntent.hasExtra("Id")) {
@@ -138,9 +142,22 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
             Intent intent = new Intent(this, NotificationsService.class);
             startService(intent);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
+        } else {
+            Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(3500); // As I am using LENGTH_LONG in Toast
+                        System.exit(0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+        }
     }
 
     protected void RefreshPage() {
@@ -167,6 +184,22 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
+    protected boolean isOnline() {
+
+        Runtime runtime = Runtime.getRuntime();
+        try {
+
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
+    }
     @Override
     public void onBackPressed() {
         browser = (WebView) findViewById(R.id.webView);

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         webSettings.setDomStorageEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setLoadWithOverviewMode(true);
-        browser.setBackgroundColor(Color.TRANSPARENT);
+        browser.setBackgroundColor(0x229240);
 
 
         browser.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);

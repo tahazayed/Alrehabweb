@@ -8,6 +8,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.taha.alrehab.Helpers.ConnectionHelper;
+
 public class SplashScreen extends Activity {
 
     //Set waktu lama splashscreen
@@ -24,7 +26,7 @@ public class SplashScreen extends Activity {
 
         setContentView(R.layout.splashscreen);
 
-        if (isOnline()) {
+        if (ConnectionHelper.isOnline()) {
             new Handler().postDelayed(new Runnable() {
 
 
@@ -62,21 +64,6 @@ public class SplashScreen extends Activity {
         }
     }
 
-    protected boolean isOnline() {
 
-        Runtime runtime = Runtime.getRuntime();
-        try {
-
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int exitValue = ipProcess.waitFor();
-            return (exitValue == 0);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return false;
-    }
 
 }

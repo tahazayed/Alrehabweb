@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.taha.alrehab.BackgroundServices.NotificationsService;
+import com.taha.alrehab.Helpers.ConnectionHelper;
 
 
 //import android.webkit.WebChromeClient;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         //ConnectionHelper oConnectionHelper = new ConnectionHelper();
         //oConnectionHelper.execute(getApplicationContext());
         // if (isConnectingToInternet(getApplicationContext())) {
-        if (isOnline()) {
+        if (ConnectionHelper.isOnline()) {
             browser.loadUrl(getString(R.string.SiteURL));
 
             Intent CurrIntent = getIntent();
@@ -183,22 +184,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
-    protected boolean isOnline() {
-
-        Runtime runtime = Runtime.getRuntime();
-        try {
-
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int exitValue = ipProcess.waitFor();
-            return (exitValue == 0);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return false;
-    }
     @Override
     public void onBackPressed() {
         browser = (WebView) findViewById(R.id.webView);

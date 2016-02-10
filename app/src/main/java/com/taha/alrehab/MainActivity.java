@@ -105,10 +105,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 //                }
 //            }
 //        });
-
+        ConnectionHelper oConnectionHelper = new ConnectionHelper();
+        oConnectionHelper.execute(getApplicationContext());
         // if (isConnectingToInternet(getApplicationContext())) {
-        if (ConnectionHelper.IsOnline()) {
-            browser.loadUrl(getString(R.string.SiteURL));
+
+        browser.loadUrl(getString(R.string.SiteURL));
 
             Intent CurrIntent = getIntent();
             if (CurrIntent.hasExtra("Type") && CurrIntent.hasExtra("Id")) {
@@ -138,23 +139,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             Intent intent = new Intent(this, NotificationsService.class);
             startService(intent);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        } else {
-            // show alert
-            Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(3500); // As I am using LENGTH_LONG in Toast
-                        System.exit(0);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            thread.start();
-
-        }
 
 
     }

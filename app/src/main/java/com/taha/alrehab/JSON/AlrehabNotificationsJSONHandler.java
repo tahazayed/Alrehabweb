@@ -1,6 +1,5 @@
 package com.taha.alrehab.JSON;
 
-import android.content.res.Resources;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -46,7 +45,7 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
     protected List<AlrehabNotification> doInBackground(String... params) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
-        String ImagesUrl = Resources.getSystem().getString(com.taha.alrehab.R.string.ImagesURL);
+        //String ImagesUrl = Resources.getSystem().getString(com.taha.alrehab.R.string.ImagesURL);
         List<AlrehabNotification> AlrehabNotificationList = new ArrayList<>();
         try {
             URL url = new URL(params[0]);
@@ -80,8 +79,8 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
                     String _imageUrl = finalObject.getString(COLUMN_IMAGEURL);
                     String _imageThumbUrl = finalObject.getString(COLUMN_IMAGETHUMBURL);
                     int _type = finalObject.getInt(COLUMN_TYPE);
-                    _imageUrl = _imageUrl.replace("../", ImagesUrl);
-                    _imageThumbUrl = _imageThumbUrl.replace("../", ImagesUrl);
+                    _imageUrl = _imageUrl.replace("../", "http://cms.alrehablife.com/");
+                    _imageThumbUrl = _imageThumbUrl.replace("../", "http://cms.alrehablife.com/");
                     AlrehabNotificationList.add(new AlrehabNotification(_id,
                             _title,
                             _publishdate,

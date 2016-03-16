@@ -24,14 +24,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import microsoft.aspnet.signalr.client.Action;
+import microsoft.aspnet.signalr.client.LogLevel;
+import microsoft.aspnet.signalr.client.Logger;
+import microsoft.aspnet.signalr.client.hubs.HubConnection;
+import microsoft.aspnet.signalr.client.hubs.HubProxy;
+
 public class NotificationsService extends Service implements AlrehabNotificationsJSONHandler.AlrehabNotificationsJSONHandlerClient {
 
     private static final String TAG = "NotificationsService";
     public static boolean isRunning = false;
     static String userId;
-    private static long UPDATE_INTERVAL = 15 * 60 * 1000;  //default
+    private static long UPDATE_INTERVAL = 150 * 60 * 1000;  //default
     private static Timer timer = new Timer();
-    private boolean IsDebug = true;
+    private boolean IsDebug = false;
 
     @Override
     public void onCreate() {
@@ -45,8 +51,43 @@ public class NotificationsService extends Service implements AlrehabNotification
             db.updateUser(userId);
         }
         db.close();
+        try {
+            // Create a new console logger
+            Logger logger = new Logger() {
+
+                @Override
+                public void log(String message, LogLevel level) {
+                    if (IsDebug) Log.d(TAG, "NotificationsHub Log" + message);
+                }
+            };
+            // Connect to the server
+            HubConnection conn = new HubConnection(getString(R.string.NotificationsHUB), "", true, logger);
+
+            // Create the hub proxy
+            HubProxy proxy = conn.createHubProxy("NotificationsHub");
+
+            proxy.subscribe(new Object() {
+                @SuppressWarnings("unused")
+                public void updateNotifications() {
+                    if (IsDebug) Log.d(TAG, "UpdateNotifications called");
+                    doServiceWork();
+                }
+            });
+            // Start the connection
+            conn.start()
+                    .done(new Action<Void>() {
+
+                        @Override
+                        public void run(Void obj) throws Exception {
+                            if (IsDebug) Log.d(TAG, "NotificationsHub Connected");
+                        }
+                    });
+        } catch (Exception ex) {
+        }
 
     }
+
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

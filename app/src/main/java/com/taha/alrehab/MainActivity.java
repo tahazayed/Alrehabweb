@@ -147,9 +147,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 browser.loadUrl(url);
             }
 
-
-            Intent intent = new Intent(this, NotificationsService.class);
-            startService(intent);
+            //check is service running or not as it starts at boot
+            if (!NotificationsService.isRunning) {
+                Intent intent = new Intent(this, NotificationsService.class);
+                startService(intent);
+            }
 
         } else {
             Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();

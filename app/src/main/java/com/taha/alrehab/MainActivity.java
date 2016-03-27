@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,7 +28,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.taha.alrehab.BackgroundServices.NotificationsService;
 import com.taha.alrehab.Helpers.ConnectionHelper;
 
-
 //import android.webkit.WebChromeClient;
 //import android.widget.ProgressBar;
 
@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private final Handler mHideHandler = new Handler();
     protected WebView browser = null;
     protected GestureDetector gestureDetector;
+    // Create Preference to check if application is going to be called first
+    // time.
+    SharedPreferences appPref;
+    boolean isFirstTime = true;
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -167,6 +171,35 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 }
             };
             thread.start();
+        }
+
+        // Get preference value to know that is it first time application is
+        // being called.
+        appPref = getSharedPreferences("isFirstTime", 0);
+        isFirstTime = appPref.getBoolean("isFirstTime", true);
+
+        if (isFirstTime) {
+            // Create explicit intent which will be used to call Our application
+            // when some one clicked on short cut
+            Intent shortcutIntent = new Intent(getApplicationContext(),
+                    MainActivity.class);
+            shortcutIntent.setAction(Intent.ACTION_MAIN);
+            Intent intent = new Intent();
+
+            // Create Implicit intent and assign Shortcut Application Name, Icon
+            intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, R.string.app_name);
+            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                    Intent.ShortcutIconResource.fromContext(
+                            getApplicationContext(), R.mipmap.ic_launcher));
+            intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            getApplicationContext().sendBroadcast(intent);
+
+            // Set preference to inform that we have created shortcut on
+            // Homescreen
+            SharedPreferences.Editor editor = appPref.edit();
+            editor.putBoolean("isFirstTime", false);
+            editor.commit();
         }
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

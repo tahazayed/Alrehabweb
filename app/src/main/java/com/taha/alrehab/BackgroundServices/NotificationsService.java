@@ -83,6 +83,7 @@ public class NotificationsService extends Service implements AlrehabNotification
                         }
                     });
         } catch (Exception ex) {
+            String error = ex.getMessage();
         }
 
     }
@@ -141,86 +142,58 @@ public class NotificationsService extends Service implements AlrehabNotification
 
     @Override
     public void onAlrehabNotificationsJSONHandlerClientResult(List<AlrehabNotification> list) {
-        if (IsDebug)
-            Log.d(TAG, "onAlrehabNotificationsJSONHandlerJSONHandlerClientResult invoked..." + list.size());
+        try {
+            if (IsDebug)
+                Log.d(TAG, "onAlrehabNotificationsJSONHandlerJSONHandlerClientResult invoked..." + list.size());
 
 
-        final Random rand = new Random();
-        rand.setSeed(100);
-        if (list.size() > 0) {
-            //NotificationManagerCompat.from(this).cancelAll();
-            NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-            Resources res = getApplicationContext().getResources();
-            for (AlrehabNotification oAlrehabNotification : list) {
-                int msgId = rand.nextInt();
-                Intent notificationIntent = new Intent(this, MainActivity.class);
+            final Random rand = new Random();
+            rand.setSeed(100);
+            if (list.size() > 0) {
+                //NotificationManagerCompat.from(this).cancelAll();
+                NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+                Resources res = getApplicationContext().getResources();
+                for (AlrehabNotification oAlrehabNotification : list) {
+                    int msgId = rand.nextInt();
+                    Intent notificationIntent = new Intent(this, MainActivity.class);
 
-                notificationIntent.putExtra("Type", (Integer.toString(oAlrehabNotification.get_type())));
-                notificationIntent.putExtra("Id", (Integer.toString(oAlrehabNotification.get_id())));
+                    notificationIntent.putExtra("Type", (Integer.toString(oAlrehabNotification.get_type())));
+                    notificationIntent.putExtra("Id", (Integer.toString(oAlrehabNotification.get_id())));
 
-                PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
-                        msgId, notificationIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
-                builder
-                        //.addAction(R.mipmap.ic_launcher, oAlrehabNotification.get_title(), contentIntent)
-                        .setContentIntent(contentIntent)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
-                        .setTicker(oAlrehabNotification.get_title())
-                        .setWhen(System.currentTimeMillis())
-                        .setAutoCancel(true)
-                        .setContentTitle(oAlrehabNotification.get_title())
-                                //.setContentText(oAlrehabNotification.get_title())
-                        .setContentText(oAlrehabNotification.get_body())
-                                //.setExtras(extras)
-                        .setOnlyAlertOnce(false)
-                        .setGroup("Alrehab")
-                        .setGroupSummary(false)
-                        .setCategory("news");
+                    PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
+                            msgId, notificationIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-                Notification n = builder.build();
-
-                n.defaults |= Notification.DEFAULT_ALL;
-                nm.notify(msgId, n);
-            }
-           /* Intent notificationIntent = new Intent(this, MainActivity.class);
-
-
-            PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),
-                    0, notificationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-            NotificationManager nm = (NotificationManager) this.getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
-            builder.setContentIntent(contentIntent)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
-                    .setTicker("You Have : "+Integer.toString(list.size()))
-                    .setWhen(System.currentTimeMillis())
-                    .setAutoCancel(true)
-                    .setContentTitle("Alrehab")
-                    .setContentText("You Have : " + Integer.toString(list.size()))
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+                    builder
+                            //.addAction(R.mipmap.ic_launcher, oAlrehabNotification.get_title(), contentIntent)
+                            .setContentIntent(contentIntent)
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
+                            .setTicker(oAlrehabNotification.get_title())
+                            .setWhen(System.currentTimeMillis())
+                            .setAutoCancel(true)
+                            .setContentTitle(oAlrehabNotification.get_title())
+                            //.setContentText(oAlrehabNotification.get_title())
+                            .setContentText(oAlrehabNotification.get_body())
                             //.setExtras(extras)
-                    .setOnlyAlertOnce(false)
-                    .setGroup("Alrehab")
-                    .setGroupSummary(true)
-                    .setCategory("news").build();
+                            .setOnlyAlertOnce(false)
+                            .setGroup("Alrehab")
+                            .setGroupSummary(false)
+                            .setCategory("news");
 
 
-            Notification n = builder.getNotification();
+                    Notification n = builder.build();
 
-            n.defaults |= Notification.DEFAULT_ALL;
-            nm.notify(0, n);*/
+                    n.defaults |= Notification.DEFAULT_ALL;
+                    nm.notify(msgId, n);
+                }
+
+            }
+
+        } catch (Exception e) {
+            String error = e.getMessage();
         }
-
-
     }
-
-
 }

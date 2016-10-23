@@ -26,13 +26,29 @@
             android:label="@string/app_name">
         </activity>
         <service
-            android:name=".BackgroundServices.NotificationsService"
+            android:name="com.taha.alrehab.BackgroundServices.NotificationsService"
             android:enabled="true"
-            android:exported="false"
-            android:process=":remote" />
-        <receiver android:name=".autostart">
+            android:icon="@mipmap/ic_launcher" />
+
+        <receiver
+            android:name="com.taha.alrehab.autostart"
+            android:enabled="true"
+            android:exported="true"
+            android:label="autostart">
+
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+
+        <receiver
+            android:name="com.taha.alrehab.BackgroundServices.SensorRestarterBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="com.taha.alrehab.BackgroundServices.ActivityRecognition.RestartSensor" />
             </intent-filter>
         </receiver>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for

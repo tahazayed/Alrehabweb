@@ -37,7 +37,15 @@ public class NotificationsService extends Service implements AlrehabNotification
     static String userId;
     private static long UPDATE_INTERVAL = 150 * 60 * 1000;  //default
     private static Timer timer = new Timer();
-    private boolean IsDebug = false;
+    private boolean IsDebug = true;
+
+    public NotificationsService(Context applicationContext) {
+        super();
+        if (IsDebug) Log.i("HERE", "here I am!");
+    }
+
+    public NotificationsService() {
+    }
 
     @Override
     public void onCreate() {
@@ -92,7 +100,7 @@ public class NotificationsService extends Service implements AlrehabNotification
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        super.onStartCommand(intent, flags, startId);
         if (IsDebug) Log.d(TAG, "Service onStartCommand");
 
         timer.scheduleAtFixedRate(
@@ -133,7 +141,10 @@ public class NotificationsService extends Service implements AlrehabNotification
     public void onDestroy() {
 
         isRunning = false;
-
+        super.onDestroy();
+        if (IsDebug) Log.i("EXIT", "ondestroy!");
+        Intent broadcastIntent = new Intent("com.taha.alrehab.BackgroundServices.ActivityRecognition.RestartSensor");
+        sendBroadcast(broadcastIntent);
         if (timer != null) timer.cancel();
         if (IsDebug) Log.d(TAG, "Timer stopped...");
 

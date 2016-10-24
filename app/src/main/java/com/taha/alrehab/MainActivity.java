@@ -170,49 +170,60 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-        // Get preference value to know that is it first time application is
-        // being called.
-        appPref = getSharedPreferences("isFirstTime", 0);
-        isFirstTime = appPref.getBoolean("isFirstTime", true);
+        try {
+            // Get preference value to know that is it first time application is
+            // being called.
+            appPref = getSharedPreferences("isFirstTime", 0);
+            isFirstTime = appPref.getBoolean("isFirstTime", true);
 
-        if (isFirstTime) {
-            // Create explicit intent which will be used to call Our application
-            // when some one clicked on short cut
-            Intent shortcutIntent = new Intent(getApplicationContext(),
-                    MainActivity.class);
-            shortcutIntent.setAction(Intent.ACTION_MAIN);
-            Intent intent = new Intent();
+            if (isFirstTime) {
+                // Create explicit intent which will be used to call Our application
+                // when some one clicked on short cut
+                Intent shortcutIntent = new Intent(getApplicationContext(),
+                        MainActivity.class);
+                shortcutIntent.setAction(Intent.ACTION_MAIN);
+                Intent intent = new Intent();
 
-            // Create Implicit intent and assign Shortcut Application Name, Icon
-            intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, R.string.app_name);
-            intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                    Intent.ShortcutIconResource.fromContext(
-                            getApplicationContext(), R.mipmap.ic_launcher));
-            intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-            getApplicationContext().sendBroadcast(intent);
+                // Create Implicit intent and assign Shortcut Application Name, Icon
+                intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+                intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, R.string.app_name);
+                intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                        Intent.ShortcutIconResource.fromContext(
+                                getApplicationContext(), R.mipmap.ic_launcher));
+                intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+                getApplicationContext().sendBroadcast(intent);
 
-            // Set preference to inform that we have created shortcut on
-            // Homescreen
-            SharedPreferences.Editor editor = appPref.edit();
-            editor.putBoolean("isFirstTime", false);
-            editor.commit();
+                // Set preference to inform that we have created shortcut on
+                // Homescreen
+                SharedPreferences.Editor editor = appPref.edit();
+                editor.putBoolean("isFirstTime", false);
+                editor.commit();
+            }
+            // ATTENTION: This was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     protected void RefreshPage() {
-        browser = (WebView) findViewById(R.id.webView);
-        browser.reload();
+        try {
+            browser = (WebView) findViewById(R.id.webView);
+            browser.reload();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        hide();
-
+        try {
+            super.onPostCreate(savedInstanceState);
+            hide();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     private void hide() {
@@ -309,22 +320,26 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public void onStart() {
-        super.onStart();
+        try {
+            super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.taha.alrehab/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
+            // ATTENTION: This was auto-generated to implement the App Indexing API.
+            // See https://g.co/AppIndexing/AndroidStudio for more information.
+            client.connect();
+            Action viewAction = Action.newAction(
+                    Action.TYPE_VIEW, // TODO: choose an action type.
+                    "Main Page", // TODO: Define a title for the content shown.
+                    // TODO: If you have web page content that matches this app activity's content,
+                    // make sure this auto-generated web page URL is correct.
+                    // Otherwise, set the URL to null.
+                    Uri.parse("http://host/path"),
+                    // TODO: Make sure this auto-generated app deep link URI is correct.
+                    Uri.parse("android-app://com.taha.alrehab/http/host/path")
+            );
+            AppIndex.AppIndexApi.start(client, viewAction);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     @Override

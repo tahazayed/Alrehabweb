@@ -1,6 +1,7 @@
 package com.taha.alrehab.JSON;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.taha.alrehab.BusinessEntities.AlrehabNotification;
@@ -28,9 +29,9 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
     public static final String COLUMN_IMAGETHUMBURL = "ImageThumbUrl";
     public static final String COLUMN_TYPE = "Type";
     public static final String COLUMN_BODY = "Body";
+    private static final String TAG = AlrehabNotificationsJSONHandler.class.getSimpleName();
     private final AlrehabNotificationsJSONHandlerClient mClient;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
     public AlrehabNotificationsJSONHandler(AlrehabNotificationsJSONHandlerClient client) {
         mClient = client;
     }
@@ -90,14 +91,13 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
                             _body));
 
 
-                } catch (Exception ex) {
-                    String error = ex.getMessage();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
                 }
             }
 
-
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -107,7 +107,7 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
                     reader.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
         return AlrehabNotificationList;

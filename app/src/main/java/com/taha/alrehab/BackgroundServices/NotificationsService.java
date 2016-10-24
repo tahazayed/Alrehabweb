@@ -97,7 +97,6 @@ public class NotificationsService extends Service implements AlrehabNotification
     }
 
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {

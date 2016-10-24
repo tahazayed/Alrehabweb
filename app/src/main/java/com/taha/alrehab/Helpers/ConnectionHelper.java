@@ -5,6 +5,7 @@ import android.util.Log;
 
 public class ConnectionHelper {
     private static final String TAG = ConnectionHelper.class.getSimpleName();
+
     public static boolean isOnline() {
 
         Runtime runtime = Runtime.getRuntime();

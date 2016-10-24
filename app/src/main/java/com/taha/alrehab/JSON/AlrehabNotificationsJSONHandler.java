@@ -32,6 +32,7 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
     private static final String TAG = AlrehabNotificationsJSONHandler.class.getSimpleName();
     private final AlrehabNotificationsJSONHandlerClient mClient;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
     public AlrehabNotificationsJSONHandler(AlrehabNotificationsJSONHandlerClient client) {
         mClient = client;
     }

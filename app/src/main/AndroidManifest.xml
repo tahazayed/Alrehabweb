@@ -28,7 +28,8 @@
         <service
             android:name="com.taha.alrehab.BackgroundServices.NotificationsService"
             android:enabled="true"
-            android:icon="@mipmap/ic_launcher" />
+            android:icon="@mipmap/ic_launcher"
+            android:process=":remote" />
 
         <receiver
             android:name="com.taha.alrehab.autostart"

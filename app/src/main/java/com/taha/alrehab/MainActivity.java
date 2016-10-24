@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
 
             browser = (WebView) findViewById(R.id.webView);
+            browser.clearHistory();
 
             CookieManager.getInstance().acceptCookie();
             WebSettings webSettings = browser.getSettings();

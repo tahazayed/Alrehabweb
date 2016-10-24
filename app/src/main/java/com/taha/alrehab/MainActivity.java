@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
      * and a change of the status and navigation bar.
      */
     private static final int UI_ANIMATION_DELAY = 0;
+    private static final String TAG = MainActivity.class.getSimpleName();
     private final Handler mHideHandler = new Handler();
     protected WebView browser = null;
     protected GestureDetector gestureDetector;
@@ -51,17 +53,21 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         @SuppressLint("InlinedApi")
         @Override
         public void run() {
-            // Delayed removal of status and navigation bar
+            try {
+                // Delayed removal of status and navigation bar
 
-            // Note that some of these constants are new as of API 16 (Jelly Bean)
-            // and API 19 (KitKat). It is safe to use them, as they are inlined
-            // at compile-time and do nothing on earlier devices.
-            mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    //| View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                // Note that some of these constants are new as of API 16 (Jelly Bean)
+                // and API 19 (KitKat). It is safe to use them, as they are inlined
+                // at compile-time and do nothing on earlier devices.
+                mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        //| View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
     };
     /**
@@ -78,101 +84,92 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         this.gestureDetector = new GestureDetector(this, this);
         this.gestureDetector.setOnDoubleTapListener(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        try {
+            browser = (WebView) findViewById(R.id.webView);
 
-        browser = (WebView) findViewById(R.id.webView);
-
-        mContentView = browser;
-
-
-        browser = (WebView) findViewById(R.id.webView);
-
-        CookieManager.getInstance().acceptCookie();
-        WebSettings webSettings = browser.getSettings();
-
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setLoadsImagesAutomatically(true);
-        webSettings.getAllowContentAccess();
-        webSettings.setAppCacheEnabled(false);
-        webSettings.setDisplayZoomControls(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webSettings.setLoadWithOverviewMode(true);
-        browser.setBackgroundColor(0x229240);
+            mContentView = browser;
 
 
-        browser.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        browser.setKeepScreenOn(false);
+            browser = (WebView) findViewById(R.id.webView);
+
+            CookieManager.getInstance().acceptCookie();
+            WebSettings webSettings = browser.getSettings();
+
+            webSettings.setJavaScriptEnabled(true);
+            webSettings.setLoadsImagesAutomatically(true);
+            webSettings.getAllowContentAccess();
+            webSettings.setAppCacheEnabled(false);
+            webSettings.setDisplayZoomControls(true);
+            webSettings.setDomStorageEnabled(true);
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webSettings.setLoadWithOverviewMode(true);
+            browser.setBackgroundColor(0x229240);
 
 
-        WebViewClientImpl webViewClient = new WebViewClientImpl(this);
-        browser.setWebViewClient(webViewClient);
+            browser.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            browser.setKeepScreenOn(false);
 
 
-//        browser.setWebChromeClient(new WebChromeClient() {
-//            public void onProgressChanged(WebView view, int newProgress) {
-//                ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-//                if (newProgress < 100 && progressBar.getVisibility() == ProgressBar.GONE) {
-//                    progressBar.setVisibility(ProgressBar.VISIBLE);
-//                }
-//                progressBar.setProgress(newProgress);
-//                //progressTxt.setText(newProgress);
-//                if (newProgress == 100) {
-//                    progressBar.setVisibility(ProgressBar.GONE);
-//                }
-//            }
-//        });
-        //ConnectionHelper oConnectionHelper = new ConnectionHelper();
-        //oConnectionHelper.execute(getApplicationContext());
-        // if (isConnectingToInternet(getApplicationContext())) {
-        if (ConnectionHelper.isOnline()) {
-            browser.loadUrl(getString(R.string.SiteURL));
+            WebViewClientImpl webViewClient = new WebViewClientImpl(this);
+            browser.setWebViewClient(webViewClient);
 
-            Intent CurrIntent = getIntent();
-            if (CurrIntent.hasExtra("Type") && CurrIntent.hasExtra("Id")) {
-                Bundle extras = getIntent().getExtras();
-                int type = 0;
-                String id = "";
-                if (!extras.getString("Type").equals(null)) {
-                    type = Integer.parseInt(extras.getString("Type"));
+
+            // if (isConnectingToInternet(getApplicationContext())) {
+            if (ConnectionHelper.isOnline()) {
+                browser.loadUrl(getString(R.string.SiteURL));
+
+                Intent CurrIntent = getIntent();
+                if (CurrIntent.hasExtra("Type") && CurrIntent.hasExtra("Id")) {
+                    Bundle extras = getIntent().getExtras();
+                    int type = 0;
+                    String id = "";
+                    if (!extras.getString("Type").equals(null)) {
+                        type = Integer.parseInt(extras.getString("Type"));
+                    }
+                    if (!extras.getString("Id").equals(null)) {
+                        id = extras.getString("Id");
+                    }
+                    String url = getString(R.string.SiteURL);
+                    switch (type) {
+                        case 1:
+                            url += "News/newsDetails.html#/?storyId=" + id;
+                            break;
+                        case 2:
+                            url += "Events/eventsDetails.html#/?eventId=" + id;
+                            break;
+                    }
+                    RefreshPage();
+                    browser.loadUrl(url);
                 }
-                if (!extras.getString("Id").equals(null)) {
-                    id = extras.getString("Id");
-                }
-                String url = getString(R.string.SiteURL);
-                switch (type) {
-                    case 1:
-                        url += "News/newsDetails.html#/?storyId=" + id;
-                        break;
-                    case 2:
-                        url += "Events/eventsDetails.html#/?eventId=" + id;
-                        break;
-                }
-                RefreshPage();
-                browser.loadUrl(url);
-            }
 
-            //check is service running or not as it starts at boot
-            if (!NotificationsService.isRunning) {
-                Intent intent = new Intent(this, NotificationsService.class);
-                startService(intent);
-            }
-
-        } else {
-            Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
+                //check is service running or not as it starts at boot
+                if (!NotificationsService.isRunning) {
                     try {
-                        Thread.sleep(3500); // As I am using LENGTH_LONG in Toast
-                        System.exit(0);
+                        Intent intent = new Intent(this, NotificationsService.class);
+                        startService(intent);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.e(TAG, e.getMessage());
                     }
                 }
-            };
-            thread.start();
-        }
 
+            } else {
+                Toast.makeText(getApplicationContext(), "no internet", Toast.LENGTH_LONG).show();
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(3500); // As I am using LENGTH_LONG in Toast
+                            System.exit(0);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         // Get preference value to know that is it first time application is
         // being called.
         appPref = getSharedPreferences("isFirstTime", 0);

@@ -68,7 +68,7 @@ public class SplashScreen extends Activity {
                                     Thread.sleep(3500); // As I am using LENGTH_LONG in Toast
                                     System.exit(0);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    Log.e(TAG, e.getMessage());
                                 }
                             }
                         };

@@ -100,24 +100,28 @@ public class NotificationsService extends Service implements AlrehabNotification
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        if (IsDebug) Log.d(TAG, "Service onStartCommand");
+        try {
+            super.onStartCommand(intent, flags, startId);
+            if (IsDebug) Log.d(TAG, "Service onStartCommand");
 
-        timer.scheduleAtFixedRate(
+            timer.scheduleAtFixedRate(
 
-                new TimerTask() {
+                    new TimerTask() {
 
-                    public void run() {
+                        public void run() {
 
-                        doServiceWork();
+                            doServiceWork();
 
-                    }
-                }, 1000, UPDATE_INTERVAL);
-        if (IsDebug) Log.d(TAG, "Timer started....");
+                        }
+                    }, 1000, UPDATE_INTERVAL);
+            if (IsDebug) Log.d(TAG, "Timer started....");
 
-        return Service.START_STICKY;
+            return Service.START_STICKY;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            return Service.START_REDELIVER_INTENT;
+        }
     }
-
 
     @Override
     public IBinder onBind(Intent arg0) {

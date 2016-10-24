@@ -32,7 +32,7 @@ import microsoft.aspnet.signalr.client.hubs.HubProxy;
 
 public class NotificationsService extends Service implements AlrehabNotificationsJSONHandler.AlrehabNotificationsJSONHandlerClient {
 
-    private static final String TAG = "NotificationsService";
+    private static final String TAG = NotificationsService.class.getSimpleName();
     public static boolean isRunning = false;
     static String userId;
     private static long UPDATE_INTERVAL = 150 * 60 * 1000;  //default
@@ -41,7 +41,7 @@ public class NotificationsService extends Service implements AlrehabNotification
 
     public NotificationsService(Context applicationContext) {
         super();
-        if (IsDebug) Log.i("HERE", "here I am!");
+        if (IsDebug) Log.d(TAG, "Cconstructor");
     }
 
     public NotificationsService() {
@@ -90,8 +90,8 @@ public class NotificationsService extends Service implements AlrehabNotification
                             if (IsDebug) Log.d(TAG, "NotificationsHub Connected");
                         }
                     });
-        } catch (Exception ex) {
-            String error = ex.getMessage();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
 
     }
@@ -132,7 +132,7 @@ public class NotificationsService extends Service implements AlrehabNotification
             if (IsDebug) Log.d(TAG, "StoriesJSONHandler invoked...");
 
         } catch (Exception e) {
-            String error = e.getMessage();
+            Log.e(TAG, e.getMessage());
         }
 
     }
@@ -142,7 +142,7 @@ public class NotificationsService extends Service implements AlrehabNotification
 
         isRunning = false;
         super.onDestroy();
-        if (IsDebug) Log.i("EXIT", "ondestroy!");
+        if (IsDebug) Log.i(TAG, "ondestroy!");
         Intent broadcastIntent = new Intent("com.taha.alrehab.BackgroundServices.ActivityRecognition.RestartSensor");
         sendBroadcast(broadcastIntent);
         if (timer != null) timer.cancel();
@@ -204,7 +204,7 @@ public class NotificationsService extends Service implements AlrehabNotification
             }
 
         } catch (Exception e) {
-            String error = e.getMessage();
+            Log.e(TAG, e.getMessage());
         }
     }
 }

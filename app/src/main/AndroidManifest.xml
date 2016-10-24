@@ -32,10 +32,10 @@
             android:process=":remote" />
 
         <receiver
-            android:name="com.taha.alrehab.autostart"
+            android:name="com.taha.alrehab.AutoStart"
             android:enabled="true"
             android:exported="true"
-            android:label="autostart">
+            android:label="AutoStart">
 
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -1,7 +1,10 @@
 package com.taha.alrehab.Helpers;
 
 
+import android.util.Log;
+
 public class ConnectionHelper {
+    private static final String TAG = ConnectionHelper.class.getSimpleName();
     public static boolean isOnline() {
 
         Runtime runtime = Runtime.getRuntime();
@@ -12,10 +15,8 @@ public class ConnectionHelper {
             return (exitValue == 0);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
-
-
         return false;
     }
 }

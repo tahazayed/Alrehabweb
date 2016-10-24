@@ -5,10 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class UserDBHandler extends SQLiteOpenHelper {
     public static final String TABLE_USER = "user";
     public static final String COLUMN_USERID = "userId";
+    private static final String TAG = UserDBHandler.class.getSimpleName();
 
 
     private static final int DATABASE_VERSION = 1;
@@ -48,8 +50,8 @@ public class UserDBHandler extends SQLiteOpenHelper {
 
             db.insert(TABLE_USER, null, values);
             db.close();
-        } catch (Exception ex) {
-            String error = ex.getMessage();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -86,7 +88,7 @@ public class UserDBHandler extends SQLiteOpenHelper {
                     userId = cursor.getString(cursor.getColumnIndex(COLUMN_USERID));
 
                 } catch (Exception e) {
-                    String error = e.getMessage();
+                    Log.e(TAG, e.getMessage());
                 }
 
             }
@@ -95,8 +97,8 @@ public class UserDBHandler extends SQLiteOpenHelper {
         try {
             if (cursor != null)
                 cursor.close();
-        } catch (Exception ex) {
-            String error = ex.getMessage();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
 
         return userId;

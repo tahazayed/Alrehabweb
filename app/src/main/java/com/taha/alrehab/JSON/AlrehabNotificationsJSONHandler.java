@@ -115,10 +115,11 @@ public class AlrehabNotificationsJSONHandler extends AsyncTask<String, String, L
 
     @Override
     protected void onPostExecute(List<AlrehabNotification> result) {
-
-        mClient.onAlrehabNotificationsJSONHandlerClientResult(result);
-
-
+        try {
+            mClient.onAlrehabNotificationsJSONHandlerClientResult(result);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     public interface AlrehabNotificationsJSONHandlerClient {
